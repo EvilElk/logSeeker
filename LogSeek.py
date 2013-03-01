@@ -18,11 +18,9 @@ class LogSeeker():
             self.tStartH = tStartMatcher.group('hours')
             self.tStartM = tStartMatcher.group('minutes')
             self.tStartS = tStartMatcher.group('seconds')
-            #self.tStartMs = tStartMatcher.group('msecs')
             self.tFinH = tFinMatcher.group('hours')
             self.tFinM = tFinMatcher.group('minutes')
             self.tFinS = tFinMatcher.group('seconds')
-            #self.tFinMs = tFinMatcher.group('msecs')
         else:
             raise ValueError('inappropriate date format')
         self.currentOffset = 0
@@ -65,12 +63,12 @@ class LogSeeker():
             sMatcher = self.dateRe.match(ln)
 
             if sMatcher:
-                ###
+
                 #print(bisect, logOffset)
                 #print(tH, tM, tS)
                 #print(sMatcher.group('hours'), sMatcher.group('minutes'), sMatcher.group('seconds'))
                 #print()
-                ###
+
                 if (sMatcher.group('hours') == tH and
                    (sMatcher.group('minutes') == tM) and
                    (-1 <= (int(sMatcher.group('seconds')) - int(tS)) <= 0)or
