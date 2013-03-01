@@ -52,7 +52,7 @@ class LogSeeker():
             self.logFd.seek(logOffset, 0)
             self.logFd.readline()
             cOffset = self.logFd.tell()
-            ln = self.logFd.readline()
+            ln = self.logFd.readline().decode()
             sMatcher = self.dateRe.match(ln)
 
             if bisect >= 2:
