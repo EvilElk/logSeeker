@@ -1,6 +1,7 @@
 __author__ = 'elk'
 
 import re
+from math import log
 
 
 class LogSeeker():
@@ -28,7 +29,7 @@ class LogSeeker():
         self.tStartDate = tStartDate
         self.tFinDate = tFinDate
         self.logFd = open(filePath, 'rb')
-        self.size = self.__seekSize__(self.logFd)
+        self.size, self.cLimit = self.__seekSize__(self.logFd)
         self.startOffset = self.__seekLog__(self.tStartH, self.tStartM, self.tStartS)
         self.finOffset = self.__seekLog__(self.tFinH, self.tFinM, self.tFinS)
         self.logFd.close()
@@ -38,12 +39,15 @@ class LogSeeker():
         fileFd.seek(0, 0)
         fileFd.seek(0, 2)
         size = fileFd.tell()
+        limit = round(log(size, 2) * 2)
         fileFd.seek(0, start)
-        return size
+        return float(size), limit
 
     def __seekLog__(self, tH, tM, tS):
         logOffset = int(self.size / 2)
         bisect = logOffset
+        cCounter = 0
+
         while True:
             if logOffset < 0:
                 logOffset = 0
@@ -55,6 +59,8 @@ class LogSeeker():
                 bisect /= 2
             else:
                 bisect = 1
+
+            cCounter += 1
 
             sMatcher = self.dateRe.match(ln)
 
@@ -68,7 +74,8 @@ class LogSeeker():
                 if (sMatcher.group('hours') == tH and
                    (sMatcher.group('minutes') == tM) and
                    (-1 <= (int(sMatcher.group('seconds')) - int(tS)) <= 0)or
-                   (logOffset == 0 or logOffset == self.size)):
+                   (logOffset == 0 or logOffset == self.size) or
+                   (cCounter >= self.cLimit)):
                     return cOffset
                 if sMatcher.group('hours') > tH:
                     logOffset -= bisect
@@ -89,9 +96,9 @@ class LogSeeker():
             else:
                 while True:
                     curPos = self.logFd.tell()
-                    nLine = self.logFd.readline()
+                    nLine = self.logFd.readline().decode()
                     if self.dateRe.match(nLine):
-                        self.logFd.seek(curPos)
+                        logOffset = curPos
                         break
                     else:
                         pass
@@ -101,6 +108,3 @@ class LogSeeker():
 
     def getFinOffset(self):
         return self.finOffset
-
-    # def getAvgStringSize(self):
-    #     return  self.avgStringSize
