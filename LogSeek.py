@@ -53,14 +53,14 @@ class LogSeeker():
             self.logFd.readline()
             cOffset = self.logFd.tell()
             ln = self.logFd.readline()
+            sMatcher = self.dateRe.match(ln)
+
             if bisect >= 2:
                 bisect /= 2
             else:
                 bisect = 1
 
             cCounter += 1
-
-            sMatcher = self.dateRe.match(ln)
 
             if sMatcher:
 
