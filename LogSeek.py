@@ -56,7 +56,7 @@ class LogSeeker():
             sMatcher = self.dateRe.match(ln)
 
             if bisect >= 2:
-                bisect = int (bisect / 2)
+                bisect = int(bisect / 2)
             else:
                 bisect = 1
 
