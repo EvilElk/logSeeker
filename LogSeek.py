@@ -37,7 +37,7 @@ class LogSeeker():
         fileFd.seek(0, 0)
         fileFd.seek(0, 2)
         size = fileFd.tell()
-        limit = round(log(size, 2) * 2)
+        limit = round(log(size, 2)) + 1.0
         fileFd.seek(0, start)
         return float(size), limit
 
