@@ -79,29 +79,6 @@ class LogInterval():
         else:
             raise ValueError('Incorrect delta sign')
 
-    def isStartPoint(self, currentTimeStamp):
-        if self.datePattern.match(currentTimeStamp):
-            if currentTimeStamp >= self.startTime.isoformat(sep=' ').replace('.', ',') and not self.isIntoInterval:
-                self.isIntoInterval = True
-                return True
-            else:
-                return False
-        else:
-            msg = "{time} not matches {timeFormat}".format(time=currentTimeStamp, timeFormat=self.dateFormat)
-            raise IncorrectTimeFormatError(msg)
-
-    def isFinPoint(self, currentTimeStamp):
-        if self.datePattern.match(currentTimeStamp):
-            if currentTimeStamp >= self.finTime.isoformat(sep=' ').replace('.', ',') and self.isIntoInterval:
-                self.isIntoInterval = False
-                return True
-            else:
-                return False
-            pass
-        else:
-            msg = "{time} not matches {timeFormat}".format(time=currentTimeStamp, timeFormat=self.dateFormat)
-            raise IncorrectTimeFormatError(msg)
-
     def getStartTime(self):
         return self.startTime.isoformat(' ').replace('.', ',')
 
@@ -129,11 +106,9 @@ class LogSeeker():
             self.tStartH = tStartMatcher.group('hours')
             self.tStartM = tStartMatcher.group('minutes')
             self.tStartS = tStartMatcher.group('seconds')
-            #self.tStartMs = tStartMatcher.group('msecs')
             self.tFinH = tFinMatcher.group('hours')
             self.tFinM = tFinMatcher.group('minutes')
             self.tFinS = tFinMatcher.group('seconds')
-            #self.tFinMs = tFinMatcher.group('msecs')
         else:
             raise ValueError('inappropriate date format')
         self.currentOffset = 0
@@ -150,7 +125,7 @@ class LogSeeker():
         fileFd.seek(0, 0)
         fileFd.seek(0, 2)
         size = fileFd.tell()
-        limit = round(log(size, 2) * 2)
+        limit = round(log(size, 2)) + 1.0
         fileFd.seek(0, start)
         return float(size), limit
 
@@ -165,23 +140,17 @@ class LogSeeker():
             self.logFd.seek(logOffset, 0)
             self.logFd.readline()
             cOffset = self.logFd.tell()
-            ln = self.logFd.readline()
+            ln = self.logFd.readline().decode()
             sMatcher = self.dateRe.match(ln)
 
             if bisect >= 2:
-                bisect /= 2
+                bisect = int(bisect / 2)
             else:
                 bisect = 1
 
             cCounter += 1
 
             if sMatcher:
-
-                #print(bisect, logOffset)
-                #print(tH, tM, tS)
-                #print(sMatcher.group('hours'), sMatcher.group('minutes'), sMatcher.group('seconds'))
-                #print()
-
                 if (sMatcher.group('hours') == tH and
                    (sMatcher.group('minutes') == tM) and
                    (-1 <= (int(sMatcher.group('seconds')) - int(tS)) <= 0)or
@@ -241,7 +210,6 @@ if datePattern.match(options['start']):
         print('err 2')
 else:
     sys.exit(1)
-
 
 inside = False
 
