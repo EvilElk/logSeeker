@@ -153,9 +153,9 @@ class LogSeeker():
             if sMatcher:
                 if (sMatcher.group('hours') == tH and
                    (sMatcher.group('minutes') == tM) and
-                   (-1 <= (int(sMatcher.group('seconds')) - int(tS)) <= 0)or
-                   (logOffset == 0 or logOffset == self.size) or
-                   (cCounter >= self.cLimit)):
+                   (-1 <= (int(sMatcher.group('seconds')) - int(tS)) <= 0) or 
+                   (cCounter >= self.cLimit) or 
+                   (logOffset == 0 or logOffset == self.size)):
                     return cOffset
                 if sMatcher.group('hours') > tH:
                     logOffset -= bisect
@@ -232,11 +232,11 @@ if 'file' in options:
             logFd.close()
             sys.exit(0)
         elif rSize < 1024:
-            writeToSTDOUT(logFd.read(rSize).decode())
+            writeToSTDOUT(logFd.read(rSize))
             logFd.close()
             sys.exit(0)
         else:
-            writeToSTDOUT(logFd.read(1024).decode())
+            writeToSTDOUT(logFd.read(1024))
             rSize -= 1024
     inside = False
 else:
