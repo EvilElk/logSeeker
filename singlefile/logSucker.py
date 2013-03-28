@@ -21,6 +21,7 @@ def set_env(srvString):
     print(env.hosts)
 
 
+@parallel
 def getLogs(start='', fin=''):
     print(env.host_string, env.hosts, env.jSrvLog)
     put('sfFilter.py', '/var/tmp/sfFilter.py')
