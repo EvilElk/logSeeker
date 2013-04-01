@@ -2,7 +2,7 @@ python script for fast log filtration by timestamp
 * /singlefile directory contains fabric module for centralized filtered log collection from several servers
 
 USAGE:
-$ python sfFilter.py '<start date>' '<findate>' <logfile>
+$ python sfFilter.py '<start date>' '<fin date>' <logfile>
 
 $ python sfFilter.py 'YYYY-MM-DD hh:mm:ss' '+10m' <logfile>
 
@@ -14,7 +14,7 @@ $ python sfFilter.py 'YYYY-MM-DD hh:mm:ss' 'YYYY-MM-DD hh:mm:ss' <logfile>
 
 / directory contains same script devided to few files
 USAGE:
-$ python log_filter.py '<start date>' '<findate>' <logfile>
+$ python log_filter.py '<start date>' '<fin date>' <logfile>
 
 $ python log_filter.py 'YYYY-MM-DD hh:mm:ss' '+10m' <logfile>
 
