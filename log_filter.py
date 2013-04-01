@@ -50,11 +50,11 @@ if 'file' in options:
             logFd.close()
             sys.exit(0)
         elif rSize < 1024:
-            writeToSTDOUT(logFd.read(rSize).decode())
+            writeToSTDOUT(logFd.read(rSize))
             logFd.close()
             sys.exit(0)
         else:
-            writeToSTDOUT(logFd.read(1024).decode())
+            writeToSTDOUT(logFd.read(1024))
             rSize -= 1024
     inside = False
 else:
