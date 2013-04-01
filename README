@@ -1,1 +1,24 @@
-This file was created by PyCharm 2.7 for binding GitHub repository
+python script for fast log filtration by timestamp
+* /singlefile directory contains fabric module for centralized filtered log collection from several servers
+
+USAGE:
+$ python sfFilter.py '<start date>' '<findate>' <logfile>
+
+$ python sfFilter.py 'YYYY-MM-DD hh:mm:ss' '+10m' <logfile>
+
+$ python sfFilter.py 'YYYY-MM-DD hh:mm:ss' '-10m' <logfile>
+
+$ python sfFilter.py 'YYYY-MM-DD hh:mm:ss' 'YYYY-MM-DD hh:mm:ss' <logfile>
+
+~$ fab -f logSucker.py set_env:'{"$host1":"$path_to_log1","$host2":"$path_to_log2"}' getLogs:'YYYY-MM-DD hh:mm:ss','+10m'
+
+/ directory contains same script devided to few files
+USAGE:
+$ python log_filter.py '<start date>' '<findate>' <logfile>
+
+$ python log_filter.py 'YYYY-MM-DD hh:mm:ss' '+10m' <logfile>
+
+$ python log_filter.py 'YYYY-MM-DD hh:mm:ss' '-10m' <logfile>
+
+$ python log_filter.py 'YYYY-MM-DD hh:mm:ss' 'YYYY-MM-DD hh:mm:ss' <logfile> 
+ 
